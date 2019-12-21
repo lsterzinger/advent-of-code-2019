@@ -1,28 +1,30 @@
 import numpy as np
 
 passrange = np.arange(138241, 674034 + 1)
-count = 0
+counter = 0
 
 for password in passrange:
     digits = [int(d) for d in str(password)]  # Get each digit
 
-    pass_increase_test = True  # Set defualt pass condition to True
-    pass_double_test = False  # Set defualt pass condition to False
-    current_digit = None
-    for i,d in enumerate(digits):
+    greaterFlag = True
 
-        if i > 0:
-            # If two digits are the same, conditionally pass them
-            if digits[i-1] == digits[i]:
-                if digits[i] == current_digit:
-                    pass_double_test = False
-                else:
-                    current_digit = digits[i]
-                    pass_double_test = True
-            if digits[i-1] == digits[i] and digits[i] != current_digit: pass_double_test = True
-            if digits[i-1] > digits[i]:
-                pass_increase_test = False
+    doubledDigit = []
 
-    if pass_double_test and pass_increase_test:
-        count += 1
-print(count)
+    for i in range(1, len(digits)):
+        d = digits[i]
+        dm1 = digits[i-1]
+        # Check for increasing
+        if d < dm1:
+            greaterFlag = False
+            break
+
+    count, unique = np.unique(digits, return_counts=[bool])
+    if 2 in count: 
+        doubleFlag = True
+        print(password)
+    else:
+        doubleFlag = False
+
+    if doubleFlag and greaterFlag:
+        counter += 1
+print(counter)
